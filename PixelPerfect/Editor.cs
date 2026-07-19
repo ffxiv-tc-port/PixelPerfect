@@ -16,20 +16,20 @@ namespace PixelPerfect
                 var mY = ImGui.GetMousePos().Y;
 
                 ImGui.SetNextWindowSize(new Vector2(500, 500), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Editor", ref _editor);
+                ImGui.Begin("Pixel Perfect 編輯器", ref _editor);
                 ImGui.PushItemWidth(100);
-                ImGui.InputFloat("Scale", ref _editorScale, 0.1f, 1f);
-                if (ImGui.IsItemHovered()) { ImGui.SetTooltip("Each box is 1 Yalm by 1 Yalm"); }
+                ImGui.InputFloat("縮放", ref _editorScale, 0.1f, 1f);
+                if (ImGui.IsItemHovered()) { ImGui.SetTooltip("每個方格為 1 雅魯 x 1 雅魯"); }
                 ImGui.PopItemWidth();
                 if (_editorScale <= 0.1f) _editorScale = 0.1f;
 
                 var windowPos = ImGui.GetWindowPos();
                 var windowMax = ImGui.GetWindowContentRegionMax();
-                
+
                 var linesY = Math.Ceiling(windowMax.Y / (10 * _editorScale));
                 var linesX = Math.Ceiling(windowMax.X / (10 * _editorScale));
 
-                if (ImGui.Button("Help"))
+                if (ImGui.Button("說明"))
                 {
                     _editorHelp = !_editorHelp;
                 }
@@ -278,23 +278,23 @@ namespace PixelPerfect
             if (_editorHelp)
             {
                 ImGui.SetNextWindowSize(new Vector2(300, 300), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Editor Help", ref _editorHelp);
-                ImGui.TextWrapped("Here you can see and edit your overlay in real time.");
-                ImGui.TextWrapped("Select the Doodle tab in the config, and the selected doodle will highlight in the editor.");
-                ImGui.TextWrapped("If you have a `line` doodle, you can also <Left Click> the ends to move them, and <Left Click> again to place them down.");
-                ImGui.TextWrapped("The dot in the centre is your player character.");
+                ImGui.Begin("Pixel Perfect 編輯器說明", ref _editorHelp);
+                ImGui.TextWrapped("在此可即時檢視並編輯你的疊加層繪製。");
+                ImGui.TextWrapped("在設定中選擇「塗鴉」分頁，所選的塗鴉將在編輯器中反白顯示。");
+                ImGui.TextWrapped("若你有「線條」類型的塗鴉，可以<左鍵點擊>端點來移動它們，再次<左鍵點擊>即可放置。");
+                ImGui.TextWrapped("正中央的圓點代表你的角色。");
                 ImGui.End();
             }
 
             if (_update)
             {
                 ImGui.SetNextWindowSize(new Vector2(300, 400), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Update", ref _update);
-                ImGui.TextWrapped("Updated for 7.0!");
-                ImGui.TextWrapped("- Added VPR and PCT.");
-                ImGui.TextWrapped("- Added Cones for object drawing");
-                ImGui.TextWrapped("- Added Z Editing");
-                if (ImGui.Button("Open Config"))
+                ImGui.Begin("Pixel Perfect 更新資訊", ref _update);
+                ImGui.TextWrapped("已更新至 7.0！");
+                ImGui.TextWrapped("- 新增絕槍戰士與繪靈法師");
+                ImGui.TextWrapped("- 新增物件繪製用的錐形");
+                ImGui.TextWrapped("- 新增 Z 軸編輯");
+                if (ImGui.Button("開啟設定"))
                 {
                     _config = true;
                 }
