@@ -60,6 +60,8 @@ namespace PixelPerfect
             IClientState clientState
         )
         {
+            Localization.Init(pluginInterface.AssemblyLocation.DirectoryName);
+
             _pi = pluginInterface;
             _cm = commandManager;
             _fw = framework;
@@ -123,9 +125,9 @@ namespace PixelPerfect
                 if (!_bitch) { _update = true; }
             }
 
-            _doodleOptions = new[]{ "Ring","Line","Dot","Dashed Ring","Cone"};
+            _doodleOptions = new[]{ "Ring".Loc(), "Line".Loc(), "Dot".Loc(), "Dashed Ring".Loc(), "Cone".Loc() };
             _doodleJobs = new[] {
-                "All",
+                "All".Loc(),
                 "PLD", "WAR", "DRK", "GNB",
                 "WHM", "SCH", "AST", "SGE",
                 "MNK", "DRG", "NIN", "SAM", "RPR", "VPR",
@@ -152,7 +154,7 @@ namespace PixelPerfect
             //luginInterface.UiBuilder.OpenConfigUi += ConfigWindow;
             commandManager.AddHandler("/pp", new CommandInfo(Command)
             {
-                HelpMessage = "Pixel Perfect config."
+                HelpMessage = "Pixel Perfect config.".Loc()
             }) ;
         }
 
