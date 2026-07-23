@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System.Numerics;
 using System.Collections.Generic;
 using System.Text;
@@ -347,10 +347,10 @@ public partial class PixelPerfect
 
                     if (type == 4) //Cone
                     {
-                        if (_cs.LocalPlayer?.TargetObject != null) {
-                            ImGui.Text($"{_cs.LocalPlayer.TargetObject.Position.X}");
-                            ImGui.Text($"{_cs.LocalPlayer.TargetObject.Position.Z}");
-                            var atan = Math.Atan2(_cs.LocalPlayer.TargetObject.Position.X - _cs.LocalPlayer.Position.X, _cs.LocalPlayer.TargetObject.Position.Z - _cs.LocalPlayer.Position.Z);
+                        if (_ot.LocalPlayer?.TargetObject != null) {
+                            ImGui.Text($"{_ot.LocalPlayer.TargetObject.Position.X}");
+                            ImGui.Text($"{_ot.LocalPlayer.TargetObject.Position.Z}");
+                            var atan = Math.Atan2(_ot.LocalPlayer.TargetObject.Position.X - _ot.LocalPlayer.Position.X, _ot.LocalPlayer.TargetObject.Position.Z - _ot.LocalPlayer.Position.Z);
                             var degr = atan * (180 / Math.PI);
                             ImGui.Text($"{atan}");
                             ImGui.Text($"{degr}");
