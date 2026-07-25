@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Dalamud.NET.Sdk/12.0.2">
 
     <PropertyGroup>
-        <Authors>Haplo064, Lother</Authors>
+        <Authors>Haplo064</Authors>
         <Description>Perfecting Pixels</Description>
         <PackageProjectUrl>https://github.com/Lother/PixelPerfect</PackageProjectUrl>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
