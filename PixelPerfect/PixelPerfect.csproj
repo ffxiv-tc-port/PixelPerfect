@@ -3,7 +3,7 @@
     <PropertyGroup>
         <Authors>Haplo064</Authors>
         <Description>Perfecting Pixels</Description>
-        <PackageProjectUrl>https://github.com/Lother/PixelPerfect</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/ffxiv-tc-port/PixelPerfect</PackageProjectUrl>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
