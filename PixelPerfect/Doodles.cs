@@ -1,7 +1,7 @@
 ﻿using System;
 using Dalamud.Game.ClientState.Conditions;
 using System.Numerics;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility;
 
 namespace PixelPerfect
