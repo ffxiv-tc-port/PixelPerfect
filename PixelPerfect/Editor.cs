@@ -10,7 +10,7 @@ namespace PixelPerfect
         {
             if (_editor)
             {
-                if (_cs.LocalPlayer == null) return;
+                if (_ot.LocalPlayer == null) return;
 
                 var mX = ImGui.GetMousePos().X;
                 var mY = ImGui.GetMousePos().Y;
@@ -56,7 +56,7 @@ namespace PixelPerfect
                         loop++;
                         continue;
                     }
-                    if(!CheckJob(_cs.LocalPlayer.ClassJob.RowId, doodle.JobsBool))
+                    if(!CheckJob(_ot.LocalPlayer.ClassJob.RowId, doodle.JobsBool))
                     {
                         loop++;
                         continue;
@@ -122,7 +122,7 @@ namespace PixelPerfect
                         
                         if (doodle.RotateOffset)
                         {
-                            var angle = -_cs.LocalPlayer.Rotation;
+                            var angle = -_ot.LocalPlayer.Rotation;
                             var cosTheta = MathF.Cos(angle);
                             var sinTheta = MathF.Sin(angle);
                             dotPosX += (cosTheta * (doodle.Vector.X * 10 * _editorScale) - sinTheta * (doodle.Vector.Y * 10 * _editorScale));
@@ -152,8 +152,8 @@ namespace PixelPerfect
                         }
                         else
                         {
-                            var sin = Math.Sin(-_cs.LocalPlayer.Rotation + Math.PI);
-                            var cos = Math.Cos(-_cs.LocalPlayer.Rotation + Math.PI);
+                            var sin = Math.Sin(-_ot.LocalPlayer.Rotation + Math.PI);
+                            var cos = Math.Cos(-_ot.LocalPlayer.Rotation + Math.PI);
                             var xr1 = cos * (x1 - dotPosX) - sin * (y1 - dotPosY) + dotPosX;
                             var yr1 = sin * (x1 - dotPosX) + cos * (y1 - dotPosY) + dotPosY;
 
@@ -206,8 +206,8 @@ namespace PixelPerfect
                             var x1 = dotPosX + (doodle.Vector.W * 10 * _editorScale);
                             var y1 = dotPosY + (doodle.Vector.X * 10 * _editorScale);
 
-                            var sin = Math.Sin(-_cs.LocalPlayer.Rotation + Math.PI);
-                            var cos = Math.Cos(-_cs.LocalPlayer.Rotation + Math.PI);
+                            var sin = Math.Sin(-_ot.LocalPlayer.Rotation + Math.PI);
+                            var cos = Math.Cos(-_ot.LocalPlayer.Rotation + Math.PI);
                             var xr1 = cos * (x1 - dotPosX) - sin * (y1 - dotPosY) + dotPosX;
                             var yr1 = sin * (x1 - dotPosX) + cos * (y1 - dotPosY) + dotPosY;
 
@@ -246,7 +246,7 @@ namespace PixelPerfect
                         }
                         if (doodle.RotateOffset)
                         {
-                            var angle = -_cs.LocalPlayer.Rotation;
+                            var angle = -_ot.LocalPlayer.Rotation;
                             var cosTheta = MathF.Cos(angle);
                             var sinTheta = MathF.Sin(angle);
                             dotPosX += (cosTheta * (doodle.Vector.X * 10 * _editorScale) - sinTheta * (doodle.Vector.Y * 10 * _editorScale));

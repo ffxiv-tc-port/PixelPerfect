@@ -220,7 +220,7 @@ namespace PixelPerfect
         }
         private void DrawConeWorld(IGameObject actor, float radius, int numSegments, float thicc, uint colour, bool offset, bool rotateOffset, Vector4 off, bool north, bool fill, bool target, float zed)
         {
-            if (_cs.LocalPlayer == null) return;
+            if (_ot.LocalPlayer == null) return;
             
             var xOff = 0f;
             var yOff = 0f;
@@ -247,12 +247,12 @@ namespace PixelPerfect
             int degs = 0;
             if (!north)
             {
-                degs = (int)(_cs.LocalPlayer.Rotation*(180/Math.PI));
+                degs = (int)(_ot.LocalPlayer.Rotation*(180/Math.PI));
             }
 
-            if (_cs.LocalPlayer.TargetObject != null && target)
+            if (_ot.LocalPlayer.TargetObject != null && target)
             {
-                var atan = Math.Atan2(_cs.LocalPlayer.TargetObject.Position.X - _cs.LocalPlayer.Position.X, _cs.LocalPlayer.TargetObject.Position.Z - _cs.LocalPlayer.Position.Z);
+                var atan = Math.Atan2(_ot.LocalPlayer.TargetObject.Position.X - _ot.LocalPlayer.Position.X, _ot.LocalPlayer.TargetObject.Position.Z - _ot.LocalPlayer.Position.Z);
                 var degr = atan * (180 / Math.PI);
                 degs = (int)degr;
             }
