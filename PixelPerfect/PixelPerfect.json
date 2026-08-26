@@ -21,5 +21,6 @@
   ],
   "IconUrl": "https://raw.githubusercontent.com/ffxiv-tc-port/DalamudPluginsTC/main/icons/PixelPerfect.png",
   "Punchline": "顯示你的碰撞判定範圍，並提供可自訂功能。深受世界首殺團隊玩家推薦！",
-  "AcceptsFeedback": true
+  "AcceptsFeedback": true,
+  "DalamudApiLevel": 13
 }

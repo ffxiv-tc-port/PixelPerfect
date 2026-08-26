@@ -10,9 +10,9 @@ namespace PixelPerfect
     {
         private void DrawDoodles()
         {
-            if (_cs.LocalPlayer == null) return;
+            if (_ot.LocalPlayer == null) return;
 
-            var actor = _cs.LocalPlayer;
+            var actor = _ot.LocalPlayer;
 
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
             ImGuiHelpers.ForceNextWindowMainViewport();
@@ -28,7 +28,7 @@ namespace PixelPerfect
                 
                 if (_condition[ConditionFlag.Occupied38]) continue; // is in-combat cutscene
 
-                if (!CheckJob(_cs.LocalPlayer.ClassJob.RowId, doodle.JobsBool)) continue;
+                if (!CheckJob(_ot.LocalPlayer.ClassJob.RowId, doodle.JobsBool)) continue;
                 
                 if (doodle.Combat && !_condition[ConditionFlag.InCombat]) continue;
 
@@ -43,7 +43,7 @@ namespace PixelPerfect
                     {
                         zed = doodle.Zed;
                     }
-                    DrawRingWorld(_cs.LocalPlayer, doodle.Radius, doodle.Segments, doodle.Thickness, ImGui.GetColorU32(doodle.Colour),doodle.Offset, doodle.RotateOffset, doodle.Vector, doodle.Filled, zed);
+                    DrawRingWorld(_ot.LocalPlayer, doodle.Radius, doodle.Segments, doodle.Thickness, ImGui.GetColorU32(doodle.Colour),doodle.Offset, doodle.RotateOffset, doodle.Vector, doodle.Filled, zed);
                 }
                 if (doodle.Type == 1)//Line
                 {
@@ -73,8 +73,8 @@ namespace PixelPerfect
                     }
                     else
                     {
-                        var sin = Math.Sin(-_cs.LocalPlayer.Rotation + Math.PI);
-                        var cos = Math.Cos(-_cs.LocalPlayer.Rotation + Math.PI);
+                        var sin = Math.Sin(-_ot.LocalPlayer.Rotation + Math.PI);
+                        var cos = Math.Cos(-_ot.LocalPlayer.Rotation + Math.PI);
                         var xr1 = cos * (doodle.Vector.W) - sin * (doodle.Vector.X ) + actor.Position.X;
                         var yr1 = sin * (doodle.Vector.W ) + cos * (doodle.Vector.X) + actor.Position.Z;
 
@@ -110,7 +110,7 @@ namespace PixelPerfect
                         yOff = doodle.Vector.Y;
                         if (doodle.RotateOffset)
                         {
-                            var angle = -_cs.LocalPlayer.Rotation;
+                            var angle = -_ot.LocalPlayer.Rotation;
                             var cosTheta = MathF.Cos(angle);
                             var sinTheta = MathF.Sin(angle);
                             xOff = cosTheta * doodle.Vector.X - sinTheta * (doodle.Vector.Y);
@@ -193,7 +193,7 @@ namespace PixelPerfect
                     {
                         zed = doodle.Zed;
                     }
-                    DrawConeWorld(_cs.LocalPlayer, doodle.Radius, doodle.Segments, doodle.Thickness, ImGui.GetColorU32(doodle.Colour), doodle.Offset, doodle.RotateOffset, doodle.Vector, doodle.North, doodle.Filled, doodle.Outline,zed);
+                    DrawConeWorld(_ot.LocalPlayer, doodle.Radius, doodle.Segments, doodle.Thickness, ImGui.GetColorU32(doodle.Colour), doodle.Offset, doodle.RotateOffset, doodle.Vector, doodle.North, doodle.Filled, doodle.Outline,zed);
                 }
             }
             ImGui.End();
