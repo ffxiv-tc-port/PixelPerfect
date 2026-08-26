@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics;
-using Dalamud.Bindings.ImGui;
+using ImGuiNET;
 using System.Numerics;
 using System.Collections.Generic;
 using System.Text;
@@ -17,11 +17,11 @@ public partial class PixelPerfect
         if (_firstTime && !_bitch)
         {
             ImGui.SetNextWindowSize(new Vector2(500, 500), ImGuiCond.FirstUseEver);
-            ImGui.Begin("Welcome to Pixel Perfect!", ref _firstTime);
-            ImGui.TextWrapped("Hey, and thanks for installing my plugin!");
+            ImGui.Begin("Welcome to Pixel Perfect!".Loc(), ref _firstTime);
+            ImGui.TextWrapped("Hey, and thanks for installing my plugin!".Loc());
             ImGui.Text("");
-            ImGui.TextWrapped("Use the config menu, and add a doodle to get started.");
-            if (ImGui.Button("Open Config"))
+            ImGui.TextWrapped("Use the config menu, and add a doodle to get started.".Loc());
+            if (ImGui.Button("Open Config".Loc()))
             {
                 _config = true;
             }
@@ -35,17 +35,17 @@ public partial class PixelPerfect
         {
             ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(750, 650));
             ImGui.SetNextWindowSize(new Vector2(750, 650), ImGuiCond.FirstUseEver);
-            ImGui.Begin("Pixel Perfect Config", ref _config);
+            ImGui.Begin("Pixel Perfect Config".Loc(), ref _config);
 
             ImGui.BeginTabBar("Config Tabs");
 
-            if (ImGui.BeginTabItem("Config##Doodles"))
+            if (ImGui.BeginTabItem("Config".Loc() + "##Doodles"))
             {
                 var number2 = 0;
-                ImGui.Checkbox("Hide Updates", ref _bitch);
+                ImGui.Checkbox("Hide Updates".Loc(), ref _bitch);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Never show any messages.");
+                    ImGui.SetTooltip("Never show any messages.".Loc());
                 }
 
                 ImGui.Separator();
@@ -57,39 +57,39 @@ public partial class PixelPerfect
                     var unsheathed = doodle.Unsheathed;
 
                     var name = doodle.Name;
-                    ImGui.Checkbox($"Enable ##{number2}", ref enabled);
+                    ImGui.Checkbox("Enable".Loc() + $" ##{number2}", ref enabled);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Turn the doodle on/off entirely");
+                        ImGui.SetTooltip("Turn the doodle on/off entirely".Loc());
                     }
 
                     ImGui.SameLine();
-                    ImGui.Checkbox($"Combat ##{number2}", ref combat);
+                    ImGui.Checkbox("Combat".Loc() + $" ##{number2}", ref combat);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Only show when engaged in combat");
+                        ImGui.SetTooltip("Only show when engaged in combat".Loc());
                     }
 
                     ImGui.SameLine();
-                    ImGui.Checkbox($"Instance ##{number2}", ref instance);
+                    ImGui.Checkbox("Instance".Loc() + $" ##{number2}", ref instance);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Only show when in an instance (a dungeon/raid etc)");
+                        ImGui.SetTooltip("Only show when in an instance (a dungeon/raid etc)".Loc());
                     }
 
                     ImGui.SameLine();
-                    ImGui.Checkbox($"Unsheathed ##{number2}", ref unsheathed);
+                    ImGui.Checkbox("Unsheathed".Loc() + $" ##{number2}", ref unsheathed);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Only show when your weapon is unsheathed");
+                        ImGui.SetTooltip("Only show when your weapon is unsheathed".Loc());
                     }
 
                     ImGui.SameLine();
                     ImGui.PushItemWidth(150);
-                    ImGui.InputText($"Name##{number2}", ref name, 20);
+                    ImGui.InputText("Name".Loc() + $"##{number2}", ref name, 20);
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Name the doodle!");
+                        ImGui.SetTooltip("Name the doodle!".Loc());
                     }
 
                     ImGui.PopItemWidth();
@@ -115,14 +115,14 @@ public partial class PixelPerfect
                         ImGui.SameLine();
                     }
 
-                    if (ImGui.Button($"Delete##{number2}"))
+                    if (ImGui.Button("Delete".Loc() + $"##{number2}"))
                     {
                         deleteNum = number2;
                     }
 
                     if (ImGui.IsItemHovered())
                     {
-                        ImGui.SetTooltip("Delete the doodle");
+                        ImGui.SetTooltip("Delete the doodle".Loc());
                     }
 
                     number2++;
@@ -134,36 +134,36 @@ public partial class PixelPerfect
                 }
 
                 ImGui.Separator();
-                if (ImGui.Button("Add Doodle"))
+                if (ImGui.Button("Add Doodle".Loc()))
                 {
                     _doodleBag.Add(new Drawing());
                 }
 
-                if (ImGui.Button("Show Editor"))
+                if (ImGui.Button("Show Editor".Loc()))
                 {
                     _editor = !_editor;
                 }
 
                 ImGui.Separator();
-                ImGui.TextWrapped("You can export and import your doodles to share, by using the buttons below.");
+                ImGui.TextWrapped("You can export and import your doodles to share, by using the buttons below.".Loc());
                 ImGui.TextWrapped(
-                    "Either export your current doodles to your clipboard, and then share the string with your friends, or import a currently copied exported string into your own doodles, by using the import button!");
-                if (ImGui.Button("Export"))
+                    "Either export your current doodles to your clipboard, and then share the string with your friends, or import a currently copied exported string into your own doodles, by using the import button!".Loc());
+                if (ImGui.Button("Export".Loc()))
                 {
                     var json = JsonConvert.SerializeObject(this._doodleBag);
                     var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
                     ImGui.SetClipboardText(base64);
-                    this.AddNotification("Copied to clipboard", NotificationType.Info);
+                    this.AddNotification("Copied to clipboard".Loc(), NotificationType.Info);
                 }
 
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Exports your current Doodles to your clipboard for sharing!");
+                    ImGui.SetTooltip("Exports your current Doodles to your clipboard for sharing!".Loc());
                 }
 
                 ImGui.SameLine();
 
-                if (ImGui.Button("Import from Clipboard"))
+                if (ImGui.Button("Import from Clipboard".Loc()))
                 {
                     try
                     {
@@ -173,17 +173,17 @@ public partial class PixelPerfect
                         var bag = JsonConvert.DeserializeObject<List<Drawing>>(json);
                         _doodleBag.AddRange(bag);
                         SaveConfig();
-                        this.AddNotification("Imported successfully", NotificationType.Success);
+                        this.AddNotification("Imported successfully".Loc(), NotificationType.Success);
                     }
                     catch
                     {
-                        this.AddNotification("Could not import", NotificationType.Error);
+                        this.AddNotification("Could not import".Loc(), NotificationType.Error);
                     }
                 }
 
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Imports your current clipboard to your Doodles!");
+                    ImGui.SetTooltip("Imports your current clipboard to your Doodles!".Loc());
                 }
 
                 ImGui.EndTabItem();
@@ -219,9 +219,9 @@ public partial class PixelPerfect
                     var outlineColour = doodle.OutlineColour;
 
                     ImGui.PushItemWidth(300);
-                    ImGui.Combo($"Type ##{number}", ref type, _doodleOptions, _doodleOptions.Length);
-                    ImGui.ColorEdit4($"Colour ##{number}", ref colour, ImGuiColorEditFlags.NoInputs);
-                    if (ImGui.TreeNode($"Jobs##{number}"))
+                    ImGui.Combo("Type".Loc() + $" ##{number}", ref type, _doodleOptions, _doodleOptions.Length);
+                    ImGui.ColorEdit4("Colour".Loc() + $" ##{number}", ref colour, ImGuiColorEditFlags.NoInputs);
+                    if (ImGui.TreeNode("Jobs".Loc() + $"##{number}"))
                     {
                         var loop = 0;
                         ImGui.Columns(6);
@@ -241,39 +241,39 @@ public partial class PixelPerfect
                         ImGui.TreePop();
                     }
 
-                    ImGui.InputFloat($"Thickness ##{number}", ref thickness, 0.1f, 1f);
+                    ImGui.InputFloat("Thickness".Loc() + $" ##{number}", ref thickness, 0.1f, 1f);
 
                     if (type == 0) //ring
                     {
-                        ImGui.InputFloat($"Radius##{number}", ref radius, 0.1f, 1f);
-                        ImGui.InputInt($"Segments ##{number}", ref segments, 1, 10);
-                        ImGui.Checkbox($"Offset##{number}", ref offset);
-                        ImGui.Checkbox($"Fill##{number}", ref filled);
-                        ImGui.Checkbox($"Z##{number}", ref zedding);
+                        ImGui.InputFloat("Radius".Loc() + $"##{number}", ref radius, 0.1f, 1f);
+                        ImGui.InputInt("Segments".Loc() + $" ##{number}", ref segments, 1, 10);
+                        ImGui.Checkbox("Offset".Loc() + $"##{number}", ref offset);
+                        ImGui.Checkbox("Fill".Loc() + $"##{number}", ref filled);
+                        ImGui.Checkbox("Z".Loc() + $"##{number}", ref zedding);
                         if (zedding)
                         {
-                            ImGui.InputFloat($"Z-value##{number}", ref zed, 0.01f, 0.1f);
+                            ImGui.InputFloat("Z-value".Loc() + $"##{number}", ref zed, 0.01f, 0.1f);
                         }
                         if (offset)
                         {
                             ImGui.SameLine();
-                            ImGui.Checkbox($"Rotate##{number}", ref rotateOffset);
-                            ImGui.InputFloat($"Offset X##{number}", ref x1, 0.1f, 1f);
-                            ImGui.InputFloat($"Offset Y##{number}", ref z1, 0.1f, 1f);
+                            ImGui.Checkbox("Rotate".Loc() + $"##{number}", ref rotateOffset);
+                            ImGui.InputFloat("Offset X".Loc() + $"##{number}", ref x1, 0.1f, 1f);
+                            ImGui.InputFloat("Offset Y".Loc() + $"##{number}", ref z1, 0.1f, 1f);
                         }
                     }
 
                     if (type == 1) //line
                     {
-                        ImGui.Checkbox($"Locked North ##{number}", ref north);
+                        ImGui.Checkbox("Locked North".Loc() + $" ##{number}", ref north);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Otherwise, player relative");
+                            ImGui.SetTooltip("Otherwise, player relative".Loc());
                         }
-                        ImGui.Checkbox($"Z##{number}", ref zedding);
+                        ImGui.Checkbox("Z".Loc() + $"##{number}", ref zedding);
                         if (zedding)
                         {
-                            ImGui.InputFloat($"Z-value##{number}", ref zed, 0.01f, 0.1f);
+                            ImGui.InputFloat("Z-value".Loc() + $"##{number}", ref zed, 0.01f, 0.1f);
                         }
 
                         ImGui.PushItemWidth(100);
@@ -288,95 +288,95 @@ public partial class PixelPerfect
 
                     if (type == 2) //dot
                     {
-                        ImGui.InputFloat($"Radius##{number}", ref radius, 0.1f, 1f);
-                        ImGui.InputInt($"Segments ##{number}", ref segments, 1, 10);
-                        ImGui.Checkbox($"Filled##{number}", ref filled);
+                        ImGui.InputFloat("Radius".Loc() + $"##{number}", ref radius, 0.1f, 1f);
+                        ImGui.InputInt("Segments".Loc() + $" ##{number}", ref segments, 1, 10);
+                        ImGui.Checkbox("Filled".Loc() + $"##{number}", ref filled);
                         ImGui.SameLine();
-                        ImGui.Checkbox($"Offset##{number}", ref offset);
+                        ImGui.Checkbox("Offset".Loc() + $"##{number}", ref offset);
                         ImGui.SameLine();
-                        ImGui.Checkbox($"Outline##{number}", ref outline);
+                        ImGui.Checkbox("Outline".Loc() + $"##{number}", ref outline);
                         if (outline)
                         {
-                            ImGui.ColorEdit4($"Outline Colour ##{number}", ref outlineColour,
+                            ImGui.ColorEdit4("Outline Colour".Loc() + $" ##{number}", ref outlineColour,
                                 ImGuiColorEditFlags.NoInputs);
                         }
-                        ImGui.Checkbox($"Z##{number}", ref zedding);
+                        ImGui.Checkbox("Z".Loc() + $"##{number}", ref zedding);
                         if (zedding)
                         {
-                            ImGui.InputFloat($"Z-value##{number}", ref zed, 0.01f, 0.1f);
+                            ImGui.InputFloat("Z-value".Loc() + $"##{number}", ref zed, 0.01f, 0.1f);
                         }
 
-                        ImGui.Checkbox($"Locked North ##{number}", ref north);
+                        ImGui.Checkbox("Locked North".Loc() + $" ##{number}", ref north);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Otherwise, player relative");
+                            ImGui.SetTooltip("Otherwise, player relative".Loc());
                         }
 
                         if (offset)
                         {
-                            ImGui.Checkbox($"Rotate offset relative to player##{number}", ref rotateOffset);
-                            ImGui.InputFloat($"Offset X##{number}", ref x1, 0.1f, 1f);
-                            ImGui.InputFloat($"Offset Y##{number}", ref z1, 0.1f, 1f);
+                            ImGui.Checkbox("Rotate offset relative to player".Loc() + $"##{number}", ref rotateOffset);
+                            ImGui.InputFloat("Offset X".Loc() + $"##{number}", ref x1, 0.1f, 1f);
+                            ImGui.InputFloat("Offset Y".Loc() + $"##{number}", ref z1, 0.1f, 1f);
                         }
 
                         if (!north)
                         {
-                            ImGui.InputFloat($"Offset X2##{number}", ref x2, 0.1f, 1f);
-                            ImGui.InputFloat($"Offset Y2##{number}", ref z2, 0.1f, 1f);
+                            ImGui.InputFloat("Offset X2".Loc() + $"##{number}", ref x2, 0.1f, 1f);
+                            ImGui.InputFloat("Offset Y2".Loc() + $"##{number}", ref z2, 0.1f, 1f);
                         }
                     }
 
                     if (type == 3) //dashed ring
                     {
-                        ImGui.InputFloat($"Radius##{number}", ref radius, 0.1f, 1f);
-                        ImGui.InputInt($"Segments ##{number}", ref segments, 1, 10);
-                        ImGui.Checkbox($"Z##{number}", ref zedding);
+                        ImGui.InputFloat("Radius".Loc() + $"##{number}", ref radius, 0.1f, 1f);
+                        ImGui.InputInt("Segments".Loc() + $" ##{number}", ref segments, 1, 10);
+                        ImGui.Checkbox("Z".Loc() + $"##{number}", ref zedding);
                         if (zedding)
                         {
-                            ImGui.InputFloat($"Z-value##{number}", ref zed, 0.01f, 0.1f);
+                            ImGui.InputFloat("Z-value".Loc() + $"##{number}", ref zed, 0.01f, 0.1f);
                         }
-                        ImGui.Checkbox($"Offset##{number}", ref offset);
+                        ImGui.Checkbox("Offset".Loc() + $"##{number}", ref offset);
                         if (offset)
                         {
                             ImGui.SameLine();
-                            ImGui.Checkbox($"Rotate##{number}", ref rotateOffset);
-                            ImGui.InputFloat($"Offset X##{number}", ref x1, 0.1f, 1f);
-                            ImGui.InputFloat($"Offset Y##{number}", ref z1, 0.1f, 1f);
+                            ImGui.Checkbox("Rotate".Loc() + $"##{number}", ref rotateOffset);
+                            ImGui.InputFloat("Offset X".Loc() + $"##{number}", ref x1, 0.1f, 1f);
+                            ImGui.InputFloat("Offset Y".Loc() + $"##{number}", ref z1, 0.1f, 1f);
                         }
                     }
 
                     if (type == 4) //Cone
                     {
-                        if (_ot.LocalPlayer?.TargetObject != null) {
-                            ImGui.Text($"{_ot.LocalPlayer.TargetObject.Position.X}");
-                            ImGui.Text($"{_ot.LocalPlayer.TargetObject.Position.Z}");
-                            var atan = Math.Atan2(_ot.LocalPlayer.TargetObject.Position.X - _ot.LocalPlayer.Position.X, _ot.LocalPlayer.TargetObject.Position.Z - _ot.LocalPlayer.Position.Z);
+                        if (_cs.LocalPlayer?.TargetObject != null) {
+                            ImGui.Text($"{_cs.LocalPlayer.TargetObject.Position.X}");
+                            ImGui.Text($"{_cs.LocalPlayer.TargetObject.Position.Z}");
+                            var atan = Math.Atan2(_cs.LocalPlayer.TargetObject.Position.X - _cs.LocalPlayer.Position.X, _cs.LocalPlayer.TargetObject.Position.Z - _cs.LocalPlayer.Position.Z);
                             var degr = atan * (180 / Math.PI);
                             ImGui.Text($"{atan}");
                             ImGui.Text($"{degr}");
                         }
-                        
-                        ImGui.Checkbox($"Locked North ##{number}", ref north);
+
+                        ImGui.Checkbox("Locked North".Loc() + $" ##{number}", ref north);
                         if (ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Otherwise, player relative");
+                            ImGui.SetTooltip("Otherwise, player relative".Loc());
                         }
-                        ImGui.InputFloat($"Radius##{number}", ref radius, 0.1f, 1f);
-                        ImGui.InputInt($"Degrees ##{number}", ref segments, 1, 10);
-                        ImGui.Checkbox($"Offset##{number}", ref offset);
-                        ImGui.Checkbox($"Fill##{number}", ref filled);
-                        ImGui.Checkbox($"Target##{number}", ref outline);
-                        ImGui.Checkbox($"Z##{number}", ref zedding);
+                        ImGui.InputFloat("Radius".Loc() + $"##{number}", ref radius, 0.1f, 1f);
+                        ImGui.InputInt("Degrees".Loc() + $" ##{number}", ref segments, 1, 10);
+                        ImGui.Checkbox("Offset".Loc() + $"##{number}", ref offset);
+                        ImGui.Checkbox("Fill".Loc() + $"##{number}", ref filled);
+                        ImGui.Checkbox("Target".Loc() + $"##{number}", ref outline);
+                        ImGui.Checkbox("Z".Loc() + $"##{number}", ref zedding);
                         if (zedding)
                         {
-                            ImGui.InputFloat($"Z-value##{number}", ref zed, 0.01f, 0.1f);
+                            ImGui.InputFloat("Z-value".Loc() + $"##{number}", ref zed, 0.01f, 0.1f);
                         }
                         if (offset)
                         {
                             ImGui.SameLine();
-                            ImGui.Checkbox($"Rotate##{number}", ref rotateOffset);
-                            ImGui.InputFloat($"Offset X##{number}", ref x1, 0.1f, 1f);
-                            ImGui.InputFloat($"Offset Y##{number}", ref z1, 0.1f, 1f);
+                            ImGui.Checkbox("Rotate".Loc() + $"##{number}", ref rotateOffset);
+                            ImGui.InputFloat("Offset X".Loc() + $"##{number}", ref x1, 0.1f, 1f);
+                            ImGui.InputFloat("Offset Y".Loc() + $"##{number}", ref z1, 0.1f, 1f);
                         }
                     }
                     ImGui.PopItemWidth();
@@ -413,7 +413,7 @@ public partial class PixelPerfect
                     doodle.Outline = outline;
                     doodle.OutlineColour = outlineColour;
 
-                    if (ImGui.Button($"Show Editor##{number}"))
+                    if (ImGui.Button("Show Editor".Loc() + $"##{number}"))
                     {
                         _editor = !_editor;
                     }
@@ -428,7 +428,7 @@ public partial class PixelPerfect
 
             ImGui.Separator();
 
-            if (ImGui.Button("Close"))
+            if (ImGui.Button("Close".Loc()))
             {
                 SaveConfig();
                 _config = false;
@@ -439,7 +439,7 @@ public partial class PixelPerfect
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, 0xDD000000 | 0x005E5BFF);
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, 0xAA000000 | 0x005E5BFF);
 
-            if (ImGui.Button("Buy Haplo a Hot Chocolate"))
+            if (ImGui.Button("Buy Haplo a Hot Chocolate".Loc()))
             {
                 Process.Start(new ProcessStartInfo
                 {

@@ -3,9 +3,9 @@
   "Name": "Pixel Perfect",
   "InternalName": "PixelPerfect",
   "AssemblyVersion": "3.3.3.0",
-  "Description": "Showing exactly where to stand since 2020. Endorsed by raiders!",
+  "Description": "自 2020 年起精準顯示站位。深受高難度團隊玩家推薦！",
   "ApplicableVersion": "any",
-  "RepoUrl": "https://github.com/Haplo064/PixelPerfect",
+  "RepoUrl": "https://github.com/ffxiv-tc-port/PixelPerfect",
   "Tags": [
     "Hitbox",
     "Overlay",
@@ -19,7 +19,7 @@
     "https://raw.githubusercontent.com/Haplo064/PixelPerfect/master/images/image2.png",
     "https://raw.githubusercontent.com/Haplo064/PixelPerfect/master/images/image1.png"
   ],
-  "IconUrl": "https://raw.githubusercontent.com/Haplo064/PixelPerfect/master/images/icon.png",
-  "Punchline": "Reveals your hitbox, with customisable features. Endorsed by world first raiders!",
+  "IconUrl": "https://raw.githubusercontent.com/ffxiv-tc-port/DalamudPluginsTC/main/icons/PixelPerfect.png",
+  "Punchline": "顯示你的碰撞判定範圍，並提供可自訂功能。深受世界首殺團隊玩家推薦！",
   "AcceptsFeedback": true
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Dalamud.Bindings.ImGui;
+using ImGuiNET;
 using System.Numerics;
 
 namespace PixelPerfect
@@ -10,26 +10,26 @@ namespace PixelPerfect
         {
             if (_editor)
             {
-                if (_ot.LocalPlayer == null) return;
+                if (_cs.LocalPlayer == null) return;
 
                 var mX = ImGui.GetMousePos().X;
                 var mY = ImGui.GetMousePos().Y;
 
                 ImGui.SetNextWindowSize(new Vector2(500, 500), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Editor", ref _editor);
+                ImGui.Begin("Pixel Perfect Editor".Loc(), ref _editor);
                 ImGui.PushItemWidth(100);
-                ImGui.InputFloat("Scale", ref _editorScale, 0.1f, 1f);
-                if (ImGui.IsItemHovered()) { ImGui.SetTooltip("Each box is 1 Yalm by 1 Yalm"); }
+                ImGui.InputFloat("Scale".Loc(), ref _editorScale, 0.1f, 1f);
+                if (ImGui.IsItemHovered()) { ImGui.SetTooltip("Each box is 1 Yalm by 1 Yalm".Loc()); }
                 ImGui.PopItemWidth();
                 if (_editorScale <= 0.1f) _editorScale = 0.1f;
 
                 var windowPos = ImGui.GetWindowPos();
                 var windowMax = ImGui.GetWindowContentRegionMax();
-                
+
                 var linesY = Math.Ceiling(windowMax.Y / (10 * _editorScale));
                 var linesX = Math.Ceiling(windowMax.X / (10 * _editorScale));
 
-                if (ImGui.Button("Help"))
+                if (ImGui.Button("Help".Loc()))
                 {
                     _editorHelp = !_editorHelp;
                 }
@@ -56,7 +56,7 @@ namespace PixelPerfect
                         loop++;
                         continue;
                     }
-                    if(!CheckJob(_ot.LocalPlayer.ClassJob.RowId, doodle.JobsBool))
+                    if(!CheckJob(_cs.LocalPlayer.ClassJob.RowId, doodle.JobsBool))
                     {
                         loop++;
                         continue;
@@ -122,7 +122,7 @@ namespace PixelPerfect
                         
                         if (doodle.RotateOffset)
                         {
-                            var angle = -_ot.LocalPlayer.Rotation;
+                            var angle = -_cs.LocalPlayer.Rotation;
                             var cosTheta = MathF.Cos(angle);
                             var sinTheta = MathF.Sin(angle);
                             dotPosX += (cosTheta * (doodle.Vector.X * 10 * _editorScale) - sinTheta * (doodle.Vector.Y * 10 * _editorScale));
@@ -152,8 +152,8 @@ namespace PixelPerfect
                         }
                         else
                         {
-                            var sin = Math.Sin(-_ot.LocalPlayer.Rotation + Math.PI);
-                            var cos = Math.Cos(-_ot.LocalPlayer.Rotation + Math.PI);
+                            var sin = Math.Sin(-_cs.LocalPlayer.Rotation + Math.PI);
+                            var cos = Math.Cos(-_cs.LocalPlayer.Rotation + Math.PI);
                             var xr1 = cos * (x1 - dotPosX) - sin * (y1 - dotPosY) + dotPosX;
                             var yr1 = sin * (x1 - dotPosX) + cos * (y1 - dotPosY) + dotPosY;
 
@@ -206,8 +206,8 @@ namespace PixelPerfect
                             var x1 = dotPosX + (doodle.Vector.W * 10 * _editorScale);
                             var y1 = dotPosY + (doodle.Vector.X * 10 * _editorScale);
 
-                            var sin = Math.Sin(-_ot.LocalPlayer.Rotation + Math.PI);
-                            var cos = Math.Cos(-_ot.LocalPlayer.Rotation + Math.PI);
+                            var sin = Math.Sin(-_cs.LocalPlayer.Rotation + Math.PI);
+                            var cos = Math.Cos(-_cs.LocalPlayer.Rotation + Math.PI);
                             var xr1 = cos * (x1 - dotPosX) - sin * (y1 - dotPosY) + dotPosX;
                             var yr1 = sin * (x1 - dotPosX) + cos * (y1 - dotPosY) + dotPosY;
 
@@ -246,7 +246,7 @@ namespace PixelPerfect
                         }
                         if (doodle.RotateOffset)
                         {
-                            var angle = -_ot.LocalPlayer.Rotation;
+                            var angle = -_cs.LocalPlayer.Rotation;
                             var cosTheta = MathF.Cos(angle);
                             var sinTheta = MathF.Sin(angle);
                             dotPosX += (cosTheta * (doodle.Vector.X * 10 * _editorScale) - sinTheta * (doodle.Vector.Y * 10 * _editorScale));
@@ -278,23 +278,23 @@ namespace PixelPerfect
             if (_editorHelp)
             {
                 ImGui.SetNextWindowSize(new Vector2(300, 300), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Editor Help", ref _editorHelp);
-                ImGui.TextWrapped("Here you can see and edit your overlay in real time.");
-                ImGui.TextWrapped("Select the Doodle tab in the config, and the selected doodle will highlight in the editor.");
-                ImGui.TextWrapped("If you have a `line` doodle, you can also <Left Click> the ends to move them, and <Left Click> again to place them down.");
-                ImGui.TextWrapped("The dot in the centre is your player character.");
+                ImGui.Begin("Pixel Perfect Editor Help".Loc(), ref _editorHelp);
+                ImGui.TextWrapped("Here you can see and edit your overlay in real time.".Loc());
+                ImGui.TextWrapped("Select the Doodle tab in the config, and the selected doodle will highlight in the editor.".Loc());
+                ImGui.TextWrapped("If you have a `line` doodle, you can also <Left Click> the ends to move them, and <Left Click> again to place them down.".Loc());
+                ImGui.TextWrapped("The dot in the centre is your player character.".Loc());
                 ImGui.End();
             }
 
             if (_update)
             {
                 ImGui.SetNextWindowSize(new Vector2(300, 400), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Pixel Perfect Update", ref _update);
-                ImGui.TextWrapped("Updated for 7.0!");
-                ImGui.TextWrapped("- Added VPR and PCT.");
-                ImGui.TextWrapped("- Added Cones for object drawing");
-                ImGui.TextWrapped("- Added Z Editing");
-                if (ImGui.Button("Open Config"))
+                ImGui.Begin("Pixel Perfect Update".Loc(), ref _update);
+                ImGui.TextWrapped("Updated for 7.0!".Loc());
+                ImGui.TextWrapped("- Added VPR and PCT.".Loc());
+                ImGui.TextWrapped("- Added Cones for object drawing".Loc());
+                ImGui.TextWrapped("- Added Z Editing".Loc());
+                if (ImGui.Button("Open Config".Loc()))
                 {
                     _config = true;
                 }

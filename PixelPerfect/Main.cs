@@ -5,7 +5,7 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Plugin;
-using Dalamud.Bindings.ImGui;
+using ImGuiNET;
 using Num = System.Numerics;
 using System.Collections.Generic;
 using System.Numerics;
@@ -27,6 +27,7 @@ namespace PixelPerfect
         private readonly IDalamudPluginInterface _pi;
         private readonly ICommandManager _cm;
         private readonly IObjectTable _ot;
+        private readonly IClientState _cs;
         private readonly IFramework _fw;
         private readonly IGameGui _gui;
         private readonly ICondition _condition;
@@ -55,9 +56,12 @@ namespace PixelPerfect
             IGameGui gameGui,
             ICondition condition,
             INotificationManager notificationManager,
-            IObjectTable objectTable
+            IObjectTable objectTable,
+            IClientState clientState
         )
         {
+            Localization.Init(pluginInterface.AssemblyLocation.DirectoryName);
+
             _pi = pluginInterface;
             _cm = commandManager;
             _fw = framework;
@@ -65,6 +69,7 @@ namespace PixelPerfect
             _condition = condition;
             _nm = notificationManager;
             _ot = objectTable;
+            _cs = clientState;
 
             _configuration = pluginInterface.GetPluginConfig() as Config ?? new Config();
             
@@ -120,9 +125,9 @@ namespace PixelPerfect
                 if (!_bitch) { _update = true; }
             }
 
-            _doodleOptions = new[]{ "Ring","Line","Dot","Dashed Ring","Cone"};
+            _doodleOptions = new[]{ "Ring".Loc(), "Line".Loc(), "Dot".Loc(), "Dashed Ring".Loc(), "Cone".Loc() };
             _doodleJobs = new[] {
-                "All",
+                "All".Loc(),
                 "PLD", "WAR", "DRK", "GNB",
                 "WHM", "SCH", "AST", "SGE",
                 "MNK", "DRG", "NIN", "SAM", "RPR", "VPR",
@@ -149,7 +154,7 @@ namespace PixelPerfect
             //luginInterface.UiBuilder.OpenConfigUi += ConfigWindow;
             commandManager.AddHandler("/pp", new CommandInfo(Command)
             {
-                HelpMessage = "Pixel Perfect config."
+                HelpMessage = "Pixel Perfect config.".Loc()
             }) ;
         }
 
@@ -215,7 +220,7 @@ namespace PixelPerfect
         }
         private void DrawConeWorld(IGameObject actor, float radius, int numSegments, float thicc, uint colour, bool offset, bool rotateOffset, Vector4 off, bool north, bool fill, bool target, float zed)
         {
-            if (_ot.LocalPlayer == null) return;
+            if (_cs.LocalPlayer == null) return;
             
             var xOff = 0f;
             var yOff = 0f;
@@ -242,12 +247,12 @@ namespace PixelPerfect
             int degs = 0;
             if (!north)
             {
-                degs = (int)(_ot.LocalPlayer.Rotation*(180/Math.PI));
+                degs = (int)(_cs.LocalPlayer.Rotation*(180/Math.PI));
             }
 
-            if (_ot.LocalPlayer.TargetObject != null && target)
+            if (_cs.LocalPlayer.TargetObject != null && target)
             {
-                var atan = Math.Atan2(_ot.LocalPlayer.TargetObject.Position.X - _ot.LocalPlayer.Position.X, _ot.LocalPlayer.TargetObject.Position.Z - _ot.LocalPlayer.Position.Z);
+                var atan = Math.Atan2(_cs.LocalPlayer.TargetObject.Position.X - _cs.LocalPlayer.Position.X, _cs.LocalPlayer.TargetObject.Position.Z - _cs.LocalPlayer.Position.Z);
                 var degr = atan * (180 / Math.PI);
                 degs = (int)degr;
             }
