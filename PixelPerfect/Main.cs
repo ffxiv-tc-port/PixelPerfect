@@ -27,6 +27,7 @@ namespace PixelPerfect
         private readonly IDalamudPluginInterface _pi;
         private readonly ICommandManager _cm;
         private readonly IObjectTable _ot;
+        private readonly IClientState _cs;
         private readonly IFramework _fw;
         private readonly IGameGui _gui;
         private readonly ICondition _condition;
@@ -55,9 +56,12 @@ namespace PixelPerfect
             IGameGui gameGui,
             ICondition condition,
             INotificationManager notificationManager,
-            IObjectTable objectTable
+            IObjectTable objectTable,
+            IClientState clientState
         )
         {
+            Localization.Init(pluginInterface.AssemblyLocation.DirectoryName);
+
             _pi = pluginInterface;
             _cm = commandManager;
             _fw = framework;
@@ -65,6 +69,7 @@ namespace PixelPerfect
             _condition = condition;
             _nm = notificationManager;
             _ot = objectTable;
+            _cs = clientState;
 
             _configuration = pluginInterface.GetPluginConfig() as Config ?? new Config();
             
@@ -80,7 +85,7 @@ namespace PixelPerfect
                 _configuration.Version = 4;
                 foreach(var doodle in _doodleBag)
                 {
-                    if (doodle.Job > 0)
+                    if (doodle.Job > 0 && doodle.JobsBool != null && doodle.Job < doodle.JobsBool.Length)
                     {
                         doodle.JobsBool[0] = false;
                         doodle.JobsBool[doodle.Job] = true;
@@ -96,17 +101,18 @@ namespace PixelPerfect
                 _configuration.Version = 7;
                 foreach (var doodle in _doodleBag)
                 {
+                    // Only the 21-slot pre-7.0 layout is shifted; any other length is fixed up by NormalizeJobs.
+                    if (doodle.JobsBool is not { Length: 21 }) continue;
+
                     doodle.JobsBool = AddElementToArray(doodle.JobsBool, false);
                     doodle.JobsBool = AddElementToArray(doodle.JobsBool, false);
-                    bool[] JobTemp = doodle.JobsBool;
-                    JobTemp[22] = doodle.JobsBool[20];//Add in PCT
-                    for(int i = 14; i < 20;i++)//Add in VPR
+                    doodle.JobsBool[22] = doodle.JobsBool[20];//Add in PCT
+                    for (int i = 19; i >= 14; i--)//Add in VPR; copy backwards so the in-place shift does not smear
                     {
-                        JobTemp[i + 1] = doodle.JobsBool[i];
+                        doodle.JobsBool[i + 1] = doodle.JobsBool[i];
                     }
-                    JobTemp[14] = false;
-                    JobTemp[21] = false;
-                    doodle.JobsBool = JobTemp;
+                    doodle.JobsBool[14] = false;
+                    doodle.JobsBool[21] = false;
                 }
                      
                     SaveConfig();
@@ -120,9 +126,9 @@ namespace PixelPerfect
                 if (!_bitch) { _update = true; }
             }
 
-            _doodleOptions = new[]{ "Ring","Line","Dot","Dashed Ring","Cone"};
+            _doodleOptions = new[]{ "Ring".Loc(), "Line".Loc(), "Dot".Loc(), "Dashed Ring".Loc(), "Cone".Loc() };
             _doodleJobs = new[] {
-                "All",
+                "All".Loc(),
                 "PLD", "WAR", "DRK", "GNB",
                 "WHM", "SCH", "AST", "SGE",
                 "MNK", "DRG", "NIN", "SAM", "RPR", "VPR",
@@ -137,7 +143,11 @@ namespace PixelPerfect
                 23, 31, 38,
                 25, 27, 35,42,
                 36 };
-            
+
+            foreach (var doodle in _doodleBag)
+            {
+                NormalizeJobs(doodle);
+            }
 
             _editorScale = 4f;
             _selected = -1;
@@ -149,7 +159,7 @@ namespace PixelPerfect
             //luginInterface.UiBuilder.OpenConfigUi += ConfigWindow;
             commandManager.AddHandler("/pp", new CommandInfo(Command)
             {
-                HelpMessage = "Pixel Perfect config."
+                HelpMessage = "Pixel Perfect config.".Loc()
             }) ;
         }
 
@@ -164,7 +174,7 @@ namespace PixelPerfect
             _pi.UiBuilder.Draw -= DrawConfig;
             _pi.UiBuilder.Draw -= DrawDoodles;
             _pi.UiBuilder.Draw -= DrawEditor;
-            _pi.UiBuilder.OpenConfigUi -= ConfigWindow;
+            _pi.UiBuilder.OpenMainUi -= ConfigWindow;
             _cm.RemoveHandler("/pp");
         }
 
@@ -176,21 +186,37 @@ namespace PixelPerfect
 
         private bool CheckJob(uint jobUint, bool[] jobList)
         {
+            var count = Math.Min(jobList.Length, _doodleJobsUint.Length);
+            if (count == 0) return false;
+
             var check = jobList[0];
-            var loop = 0;
-            foreach(var job in jobList )
+            for (var i = 0; i < count; i++)
             {
-                if ( job )
+                if (jobList[i] && _doodleJobsUint[i] == jobUint)
                 {
-                    if (_doodleJobsUint[loop] == jobUint)
-                    {
-                        check = true;
-                    }
+                    check = true;
                 }
-                loop++;
             }
 
             return check;
+        }
+
+        // Resizes JobsBool to the current job list; null becomes "All" (index 0) only.
+        private void NormalizeJobs(Drawing doodle)
+        {
+            var length = _doodleJobs.Length;
+            if (doodle.JobsBool == null)
+            {
+                doodle.JobsBool = new bool[length];
+                doodle.JobsBool[0] = true;
+                return;
+            }
+
+            if (doodle.JobsBool.Length == length) return;
+
+            var resized = new bool[length];
+            Array.Copy(doodle.JobsBool, resized, Math.Min(doodle.JobsBool.Length, length));
+            doodle.JobsBool = resized;
         }
         
         private void SaveConfig()
